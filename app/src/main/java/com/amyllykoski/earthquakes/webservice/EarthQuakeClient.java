@@ -23,18 +23,13 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   private static final String FORMAT = "geojson";
 
   public void execute() {
-
     Gson gson = new GsonBuilder()
         .setLenient()
-        .registerTypeAdapter(EarthQuakeAPIRecord.class, new EarthQuakeRecordDeserializer())
-        .registerTypeAdapter(EarthQuakeAPIRecord.class, new EarthQuakeRecordDeserializer())
+        .registerTypeAdapter(EarthQuakeAPIRecord.class,
+            new EarthQuakeRecordDeserializer())
         .create();
 
-    HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-    logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-    httpClient.addInterceptor(logging);
-
+    OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.NONE);
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -47,10 +42,12 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   }
 
   @Override
-  public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Response<EarthQuakeAPIResponse> response) {
+  public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call,
+                         @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
       List<EarthQuakeAPIRecord> earthQuakeRecordList = response.body().getRecords();
       for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
+
         Log.d(TAG, record.toString());
       }
     } else {
@@ -61,5 +58,14 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   @Override
   public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, Throwable t) {
     Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
+  }
+
+  @NonNull
+  private OkHttpClient.Builder setLogLevel(HttpLoggingInterceptor.Level level) {
+    HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+    logging.setLevel(level);
+    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    httpClient.addInterceptor(logging);
+    return httpClient;
   }
 }
