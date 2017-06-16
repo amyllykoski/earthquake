@@ -1,25 +1,19 @@
 package com.amyllykoski.earthquakes.webservice;
 
-import com.amyllykoski.earthquakes.model.Coordinates;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class EarthQuakeAPIResponse {
-
-  @SerializedName("type")
-  private Object featureCollection;
-
-  @SerializedName("metadata")
-  private Object metaData;
+class EarthQuakeAPIResponse {
 
   @SerializedName("features")
   @Expose
-  private List<EarthQuakeAPIRecord> records;
+  private List<EarthQuakeAPIRecord> mRecords = new ArrayList<>();
 
-  public List<EarthQuakeAPIRecord> getRecords() {
-    return records;
+  List<EarthQuakeAPIRecord> getRecords() {
+    if (mRecords == null) mRecords = new ArrayList<>();
+    return mRecords;
   }
 }

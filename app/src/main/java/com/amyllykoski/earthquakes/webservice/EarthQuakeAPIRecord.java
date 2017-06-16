@@ -8,49 +8,55 @@ import java.util.List;
 
 class EarthQuakeAPIRecord {
 
+  @SuppressWarnings("unused")
   @SerializedName("properties")
   @Expose
-  private Properties properties;
+  private Properties mProperties;
 
+  @SuppressWarnings("unused")
   @SerializedName("geometry")
   @Expose
-  private Geometry geometry;
+  private Geometry mGeometry;
 
   @Override
   public String toString() {
     return "EarthQuakeAPIRecord{" +
-        "properties=" + properties.toString() +
-        ", geometry=" + geometry.toString() +
+        "properties=" + mProperties.toString() +
+        ", geometry=" + mGeometry.toString() +
         '}';
   }
 
   private static class Properties {
 
+    @SuppressWarnings("unused")
     @SerializedName("mag")
     @Expose
-    private String magnitude;
+    private String mMagnitude;
 
     @Override
     public String toString() {
       return "Properties{" +
-          "magnitude='" + magnitude + '\'' +
-          ", place='" + place + '\'' +
-          ", time='" + time + '\'' +
-          ", tsunami='" + tsunami + '\'' +
+          "mMagnitude='" + mMagnitude + '\'' +
+          ", mPlace='" + mPlace + '\'' +
+          ", mTime='" + mTime + '\'' +
+          ", mTsunami='" + mTsunami + '\'' +
           '}';
     }
 
+    @SuppressWarnings("unused")
     @SerializedName("place")
     @Expose
-    private String place;
+    private String mPlace;
 
+    @SuppressWarnings("unused")
     @SerializedName("time")
     @Expose
-    private String time;
+    private String mTime;
 
+    @SuppressWarnings("unused")
     @SerializedName("tsunami")
     @Expose
-    private String tsunami;
+    private String mTsunami;
   }
 
   private static class Geometry {
@@ -58,12 +64,13 @@ class EarthQuakeAPIRecord {
     @Override
     public String toString() {
       return "Geometry{" +
-          "coordinates=" + coordinates +
+          "mCoordinates=" + mCoordinates +
           '}';
     }
 
+    @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
     @SerializedName("coordinates")
     @Expose
-    private List<String> coordinates = new ArrayList<>();
+    private List<String> mCoordinates = new ArrayList<>();
   }
 }

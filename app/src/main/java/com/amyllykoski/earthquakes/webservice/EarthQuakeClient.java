@@ -1,5 +1,6 @@
 package com.amyllykoski.earthquakes.webservice;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -46,7 +47,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   }
 
   @Override
-  public void onResponse(Call<EarthQuakeAPIResponse> call, Response<EarthQuakeAPIResponse> response) {
+  public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
       List<EarthQuakeAPIRecord> earthQuakeRecordList = response.body().getRecords();
       for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
@@ -58,7 +59,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   }
 
   @Override
-  public void onFailure(Call<EarthQuakeAPIResponse> call, Throwable t) {
+  public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, Throwable t) {
     Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
   }
 }
