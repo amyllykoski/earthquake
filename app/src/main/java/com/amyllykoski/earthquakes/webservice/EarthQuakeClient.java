@@ -26,6 +26,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
     Gson gson = new GsonBuilder()
         .setLenient()
         .registerTypeAdapter(EarthQuakeAPIRecord.class, new EarthQuakeRecordDeserializer())
+        .registerTypeAdapter(EarthQuakeAPIRecord.class, new EarthQuakeRecordDeserializer())
         .create();
 
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

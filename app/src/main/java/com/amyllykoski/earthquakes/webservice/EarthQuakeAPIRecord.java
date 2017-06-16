@@ -3,65 +3,67 @@ package com.amyllykoski.earthquakes.webservice;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EarthQuakeAPIRecord {
+class EarthQuakeAPIRecord {
 
-  @SerializedName("mag")
+  @SerializedName("properties")
   @Expose
-  private String magnitude;
+  private Properties properties;
 
-  @SerializedName("place")
+  @SerializedName("geometry")
   @Expose
-  private String place;
-
-  @SerializedName("time")
-  @Expose
-  private String time;
-
-  @SerializedName("coordinates")
-  @Expose
-  private String[] coordinates;
-
-  public String getMagnitude() {
-    return magnitude;
-  }
-
-  public void setMagnitude(String magnitude) {
-    this.magnitude = magnitude;
-  }
-
-  public String getPlace() {
-    return place;
-  }
-
-  public void setPlace(String place) {
-    this.place = place;
-  }
-
-  public String getTime() {
-    return time;
-  }
-
-  public void setTime(String time) {
-    this.time = time;
-  }
-
-  public String[] getCoordinates() {
-    return coordinates;
-  }
-
-  public void setCoordinates(String[] coordinates) {
-    this.coordinates = coordinates;
-  }
+  private Geometry geometry;
 
   @Override
   public String toString() {
     return "EarthQuakeAPIRecord{" +
-        "magnitude='" + magnitude + '\'' +
-        ", place='" + place + '\'' +
-        ", time='" + time + '\'' +
-        ", coordinates=" + Arrays.toString(coordinates) +
+        "properties=" + properties.toString() +
+        ", geometry=" + geometry.toString() +
         '}';
+  }
+
+  private static class Properties {
+
+    @SerializedName("mag")
+    @Expose
+    private String magnitude;
+
+    @Override
+    public String toString() {
+      return "Properties{" +
+          "magnitude='" + magnitude + '\'' +
+          ", place='" + place + '\'' +
+          ", time='" + time + '\'' +
+          ", tsunami='" + tsunami + '\'' +
+          '}';
+    }
+
+    @SerializedName("place")
+    @Expose
+    private String place;
+
+    @SerializedName("time")
+    @Expose
+    private String time;
+
+    @SerializedName("tsunami")
+    @Expose
+    private String tsunami;
+  }
+
+  private static class Geometry {
+
+    @Override
+    public String toString() {
+      return "Geometry{" +
+          "coordinates=" + coordinates +
+          '}';
+    }
+
+    @SerializedName("coordinates")
+    @Expose
+    private List<String> coordinates = new ArrayList<>();
   }
 }

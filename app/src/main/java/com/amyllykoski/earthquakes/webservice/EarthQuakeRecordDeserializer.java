@@ -13,8 +13,7 @@ import java.lang.reflect.Type;
 public class EarthQuakeRecordDeserializer implements JsonDeserializer<EarthQuakeAPIRecord> {
   @Override
   public EarthQuakeAPIRecord deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-    Log.d("Paska", json.toString());
-    JsonElement content = json.getAsJsonObject().get("properties");
+    JsonElement content = json.getAsJsonObject();
     return new Gson().fromJson(content, EarthQuakeAPIRecord.class);
   }
 }
