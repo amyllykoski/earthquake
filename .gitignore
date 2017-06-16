@@ -1,0 +1,11 @@
+gradle/
+.idea/
+local.properties
+build/
+five-by-five-rx.iml
+app/app.iml
+.gradle
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
