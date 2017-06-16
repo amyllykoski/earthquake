@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.dummy.DummyContent;
+import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 
 import java.util.List;
 
@@ -44,20 +45,28 @@ class EarthQuakeRecordListAdapter
       @Override
       public void onClick(View v) {
         if (mTwoPane) {
-          Bundle arguments = new Bundle();
-          arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-          EarthQuakeRecordDetailFragment fragment = new EarthQuakeRecordDetailFragment();
-          fragment.setArguments(arguments);
-          mFragmentManager.beginTransaction()
-              .replace(R.id.earthquakerecord_detail_container, fragment)
-              .commit();
+          handleTwoPane();
         } else {
-          Context context = v.getContext();
-          Intent intent = new Intent(context, EarthQuakeRecordDetailActivity.class);
-          intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
-          context.startActivity(intent);
+          handleOnePane(v);
         }
+      }
+
+      private void handleOnePane(View v) {
+        Context context = v.getContext();
+        Intent intent = new Intent(context, EarthQuakeRecordDetailActivity.class);
+        intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+
+        context.startActivity(intent);
+      }
+
+      private void handleTwoPane() {
+        Bundle arguments = new Bundle();
+        arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+        EarthQuakeRecordDetailFragment fragment = new EarthQuakeRecordDetailFragment();
+        fragment.setArguments(arguments);
+        mFragmentManager.beginTransaction()
+            .replace(R.id.earthquakerecord_detail_container, fragment)
+            .commit();
       }
     });
   }

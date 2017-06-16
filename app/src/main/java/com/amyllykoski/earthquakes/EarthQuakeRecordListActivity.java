@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.amyllykoski.earthquakes.dummy.DummyContent;
+import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
 
 public class EarthQuakeRecordListActivity extends AppCompatActivity {
 
@@ -30,6 +31,8 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
       public void onClick(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
+        EarthQuakeClient client = new EarthQuakeClient();
+        client.execute();
       }
     });
   }
