@@ -8,7 +8,7 @@ public class Time {
     mMillis = millis;
   }
 
-  public String getmMillis() {
+  public String getMillis() {
     return mMillis;
   }
 

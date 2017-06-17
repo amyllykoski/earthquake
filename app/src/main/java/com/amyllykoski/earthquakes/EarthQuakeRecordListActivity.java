@@ -21,7 +21,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
 
     setupToolbar();
     setupFAB();
-    setupRecyclerView((RecyclerView) findViewById(R.id.earthquakerecord_list));
+//    setupRecyclerView((RecyclerView) findViewById(R.id.earthquakerecord_list));
   }
 
   private void setupFAB() {
@@ -32,7 +32,10 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
         EarthQuakeClient client = new EarthQuakeClient();
-        client.execute();
+        RecyclerView r = (RecyclerView) findViewById(R.id.earthquakerecord_list);
+        EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter(getSupportFragmentManager());
+        r.setAdapter(a);
+        client.execute(a);
       }
     });
   }
@@ -43,8 +46,8 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
     toolbar.setTitle(getTitle());
   }
 
-  private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-    recyclerView.setAdapter(new EarthQuakeRecordListAdapter(getSupportFragmentManager(),
-        DummyContent.ITEMS));
-  }
+//  private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+//    recyclerView.setAdapter(new EarthQuakeRecordListAdapter(getSupportFragmentManager(),
+//        DummyContent.ITEMS));
+//  }
 }

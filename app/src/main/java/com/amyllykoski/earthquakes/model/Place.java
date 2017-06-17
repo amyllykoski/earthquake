@@ -8,7 +8,7 @@ public class Place {
     mPlace = place;
   }
 
-  public String getmMagnitude() {
+  public String get() {
     return mPlace;
   }
 

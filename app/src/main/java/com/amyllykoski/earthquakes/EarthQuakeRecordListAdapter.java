@@ -10,21 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.amyllykoski.earthquakes.dummy.DummyContent;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class EarthQuakeRecordListAdapter
+public class EarthQuakeRecordListAdapter
     extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder> {
 
-  private final List<DummyContent.DummyItem> mValues;
+  private List<EarthQuakeRecord> mValues = new ArrayList<>();
   private boolean mTwoPane;
   private FragmentManager mFragmentManager;
 
-  EarthQuakeRecordListAdapter(final FragmentManager fragmentManager, List<DummyContent.DummyItem> items) {
-    mValues = items;
+  EarthQuakeRecordListAdapter(final FragmentManager fragmentManager) {
     mFragmentManager = fragmentManager;
+  }
+
+  public void setItems(List<EarthQuakeRecord> items) {
+    mValues = items;
+    notifyDataSetChanged();
   }
 
   @Override
@@ -38,8 +42,9 @@ class EarthQuakeRecordListAdapter
   @Override
   public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.mItem = mValues.get(position);
-    holder.mIdView.setText(mValues.get(position).id);
-    holder.mContentView.setText(mValues.get(position).content);
+    holder.mDateOccurred.setText(mValues.get(position).mTime.getMillis());
+    holder.mPlaceOccurred.setText(mValues.get(position).mPlace.get());
+    holder.mMagnitude.setText(mValues.get(position).mMagnitude.get());
 
     holder.mView.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -54,14 +59,14 @@ class EarthQuakeRecordListAdapter
       private void handleOnePane(View v) {
         Context context = v.getContext();
         Intent intent = new Intent(context, EarthQuakeRecordDetailActivity.class);
-        intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+        intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.mTime.toString());
 
         context.startActivity(intent);
       }
 
       private void handleTwoPane() {
         Bundle arguments = new Bundle();
-        arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+        arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.mTime.toString());
         EarthQuakeRecordDetailFragment fragment = new EarthQuakeRecordDetailFragment();
         fragment.setArguments(arguments);
         mFragmentManager.beginTransaction()
@@ -78,20 +83,27 @@ class EarthQuakeRecordListAdapter
 
   class ViewHolder extends RecyclerView.ViewHolder {
     final View mView;
-    final TextView mIdView;
-    final TextView mContentView;
-    DummyContent.DummyItem mItem;
+    final TextView mDateOccurred;
+    final TextView mPlaceOccurred;
+    final TextView mMagnitude;
+    EarthQuakeRecord mItem;
 
     ViewHolder(View view) {
       super(view);
       mView = view;
-      mIdView = (TextView) view.findViewById(R.id.id);
-      mContentView = (TextView) view.findViewById(R.id.content);
+      mDateOccurred = (TextView) view.findViewById(R.id.date_occurred);
+      mPlaceOccurred = (TextView) view.findViewById(R.id.place_occurred);
+      mMagnitude = (TextView) view.findViewById(R.id.magnitude);
+      mItem = null;
     }
 
     @Override
     public String toString() {
-      return super.toString() + " '" + mContentView.getText() + "'";
+      return "ViewHolder{" +
+          "mDateOccurred=" + mDateOccurred.getText() +
+          ", mPlaceOccurred=" + mPlaceOccurred.getText() +
+          ", mMagnitude=" + mMagnitude.getText() +
+          '}';
     }
   }
 }

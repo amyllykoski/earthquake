@@ -8,7 +8,7 @@ public class Magnitude {
     mMagnitude = magnitude;
   }
 
-  public String getmMagnitude() {
+  public String get() {
     return mMagnitude;
   }
 

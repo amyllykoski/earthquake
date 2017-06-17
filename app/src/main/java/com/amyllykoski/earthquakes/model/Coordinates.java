@@ -14,7 +14,7 @@ public class Coordinates {
     return mLatitude;
   }
 
-  public String getmLongitude() {
+  public String getLongitude() {
     return mLongitude;
   }
 

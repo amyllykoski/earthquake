@@ -3,9 +3,16 @@ package com.amyllykoski.earthquakes.webservice;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.amyllykoski.earthquakes.EarthQuakeRecordListAdapter;
+import com.amyllykoski.earthquakes.model.Coordinates;
+import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
+import com.amyllykoski.earthquakes.model.Magnitude;
+import com.amyllykoski.earthquakes.model.Place;
+import com.amyllykoski.earthquakes.model.Time;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -22,7 +29,11 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   private final String TAG = this.getClass().getSimpleName();
   private static final String FORMAT = "geojson";
 
-  public void execute() {
+  EarthQuakeRecordListAdapter mAdapter;
+
+  public void execute(EarthQuakeRecordListAdapter adapter) {
+    mAdapter = adapter;
+
     Gson gson = new GsonBuilder()
         .setLenient()
         .registerTypeAdapter(EarthQuakeAPIRecord.class,
@@ -45,18 +56,28 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call,
                          @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
+      ArrayList<EarthQuakeRecord> items = new ArrayList<>();
       List<EarthQuakeAPIRecord> earthQuakeRecordList = response.body().getRecords();
       for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
-
-        Log.d(TAG, record.toString());
+        items.add(map(record));
       }
+      mAdapter.setItems(items);
     } else {
       Log.e(TAG, response.errorBody().toString());
     }
   }
 
+  private EarthQuakeRecord map(EarthQuakeAPIRecord rec) {
+    return new EarthQuakeRecord(
+        new Time(rec.getTime()),
+        new Magnitude(rec.getMagnitude()),
+        new Place(rec.getPlace()),
+        rec.getTsunami().equals("0") ? false : true,
+        new Coordinates(rec.getLatitude(), rec.getLongitude()));
+  }
+
   @Override
-  public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, Throwable t) {
+  public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Throwable t) {
     Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
   }
 
