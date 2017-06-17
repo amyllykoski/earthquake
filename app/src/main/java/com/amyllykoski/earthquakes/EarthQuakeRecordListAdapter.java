@@ -42,7 +42,7 @@ public class EarthQuakeRecordListAdapter
   @Override
   public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.mItem = mValues.get(position);
-    holder.mDateOccurred.setText(mValues.get(position).mTime.getMillis());
+    holder.mDateOccurred.setText(mValues.get(position).mTime.getDate(null));
     holder.mPlaceOccurred.setText(mValues.get(position).mPlace.get());
     holder.mMagnitude.setText(mValues.get(position).mMagnitude.get());
 

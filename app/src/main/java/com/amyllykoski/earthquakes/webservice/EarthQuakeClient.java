@@ -12,8 +12,11 @@ import com.amyllykoski.earthquakes.model.Time;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -26,12 +29,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
 
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
-  private final String TAG = this.getClass().getSimpleName();
   private static final String FORMAT = "geojson";
+  private final String TAG = this.getClass().getSimpleName();
 
-  EarthQuakeRecordListAdapter mAdapter;
+  private EarthQuakeRecordListAdapter mAdapter;
 
-  public void execute(EarthQuakeRecordListAdapter adapter) {
+  public void execute(final EarthQuakeRecordListAdapter adapter,
+                      final String minMagnitude) {
     mAdapter = adapter;
 
     Gson gson = new GsonBuilder()
@@ -40,7 +44,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
             new EarthQuakeRecordDeserializer())
         .create();
 
-    OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.NONE);
+    OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.BASIC);
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -48,31 +52,48 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
         .build();
 
     EarthquakeAPI earthquakeAPI = retrofit.create(EarthquakeAPI.class);
-    Call<EarthQuakeAPIResponse> call = earthquakeAPI.getEarthQuakes(FORMAT, "3.0", "2017-06-15");
+    Call<EarthQuakeAPIResponse> call =
+        earthquakeAPI.getEarthQuakes(FORMAT, minMagnitude, startTime());
     call.enqueue(this);
+  }
+
+  private String startTime() {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.DAY_OF_YEAR, -1);
+    return formatter.format(calendar.getTime());
   }
 
   @Override
   public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call,
                          @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
-      ArrayList<EarthQuakeRecord> items = new ArrayList<>();
-      List<EarthQuakeAPIRecord> earthQuakeRecordList = response.body().getRecords();
-      for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
-        items.add(map(record));
-      }
-      mAdapter.setItems(items);
+      updateAdapter(response);
     } else {
-      Log.e(TAG, response.errorBody().toString());
+      if (response.errorBody() == null) Log.e(TAG, "Body is null.");
+      else Log.e(TAG, response.errorBody().toString());
     }
   }
 
-  private EarthQuakeRecord map(EarthQuakeAPIRecord rec) {
+  private void updateAdapter(@NonNull Response<EarthQuakeAPIResponse> response) {
+    ArrayList<EarthQuakeRecord> items = new ArrayList<>();
+    List<EarthQuakeAPIRecord> earthQuakeRecordList;
+    if (response.body() == null)
+      earthQuakeRecordList = new ArrayList<EarthQuakeAPIRecord>();
+    else
+      earthQuakeRecordList = response.body().getRecords();
+    for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
+      items.add(convert(record));
+    }
+    mAdapter.setItems(items);
+  }
+
+  private EarthQuakeRecord convert(EarthQuakeAPIRecord rec) {
     return new EarthQuakeRecord(
         new Time(rec.getTime()),
         new Magnitude(rec.getMagnitude()),
         new Place(rec.getPlace()),
-        rec.getTsunami().equals("0") ? false : true,
+        !rec.getTsunami().equals("0"),
         new Coordinates(rec.getLatitude(), rec.getLongitude()));
   }
 

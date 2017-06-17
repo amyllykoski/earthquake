@@ -1,5 +1,7 @@
 package com.amyllykoski.earthquakes.webservice;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +14,7 @@ class EarthQuakeAPIResponse {
   @Expose
   private List<EarthQuakeAPIRecord> mRecords = new ArrayList<>();
 
-  List<EarthQuakeAPIRecord> getRecords() {
+  @NonNull List<EarthQuakeAPIRecord> getRecords() {
     if (mRecords == null) mRecords = new ArrayList<>();
     return mRecords;
   }
