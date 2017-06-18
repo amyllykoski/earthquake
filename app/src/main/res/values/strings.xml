@@ -2,4 +2,7 @@
     <string name="app_name">EarthQuakes</string>
     <string name="title_earthquakerecord_detail">EarthQuakeRecord Detail
     </string>
+    <string name="list_header_time">Time</string>
+    <string name="list_header_place">Place</string>
+    <string name="list_header_magnitude">Mag</string>
 </resources>
