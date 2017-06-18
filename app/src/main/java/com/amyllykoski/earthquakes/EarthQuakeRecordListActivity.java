@@ -1,5 +1,8 @@
 package com.amyllykoski.earthquakes;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -81,6 +84,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
   }
 
   private void load() {
+    View view = findViewById(R.id.earthquakerecord_list);
     EarthQuakeClient client = new EarthQuakeClient();
     RecyclerView earthQuakeList = (RecyclerView) findViewById(R.id.earthquakerecord_list);
     earthQuakeList.addItemDecoration(new DividerItemDecoration(earthQuakeList.getContext(),
@@ -89,13 +93,23 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
         (RecyclerView) findViewById(R.id.earthquakerecord_list),
         (TextView) findViewById(R.id.empty_view));
     earthQuakeList.setAdapter(adapter);
-
-    client.execute(adapter, mMinMagnitude / 10.0 + "");
+    if (!isConnectedToNetwork()) {
+      Snackbar.make(view, "No network connection.", Snackbar.LENGTH_LONG)
+          .setAction("Action", null).show();
+    } else {
+      client.execute(adapter, mMinMagnitude / 10.0 + "");
+    }
   }
 
   private void setupToolbar() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     toolbar.setTitle(getTitle());
+  }
+
+  private boolean isConnectedToNetwork() {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+    return networkInfo != null && networkInfo.isConnected();
   }
 }
