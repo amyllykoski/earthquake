@@ -5,4 +5,5 @@
     <string name="list_header_time">Time</string>
     <string name="list_header_place">Place</string>
     <string name="list_header_magnitude">Mag</string>
+    <string name="action_set_minimum_magnitude">Set Minimum Magnitude</string>
 </resources>

@@ -6,6 +6,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.*;
 import android.support.v7.widget.DividerItemDecoration;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
@@ -22,9 +26,29 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
 //    setupRecyclerView((RecyclerView) findViewById(R.id.earthquakerecord_list));
   }
 
+  @Override
   protected void onResume() {
     super.onResume();
     load();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.action_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_set_magnitude:
+        Log.d("Paska", "clicked");
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   private void setupFAB() {
@@ -46,7 +70,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
         new LinearLayoutManager(this).getOrientation()));
     EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter();
     r.setAdapter(a);
-    client.execute(a, "3");
+    client.execute(a, "3.1");
   }
 
   private void setupToolbar() {
