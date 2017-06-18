@@ -42,7 +42,6 @@ public class EarthQuakeRecordListAdapter
 
   @Override
   public void onBindViewHolder(final ViewHolder holder, int position) {
-    holder.mItem = mValues.get(position);
     holder.mDateOccurred.setText(mValues.get(position).mTime.getTime(null));
     holder.mPlaceOccurred.setText(mValues.get(position).mPlace.get());
     holder.mMagnitude.setText(mValues.get(position).mMagnitude.get());
@@ -81,7 +80,6 @@ public class EarthQuakeRecordListAdapter
     final TextView mDateOccurred;
     final TextView mPlaceOccurred;
     final TextView mMagnitude;
-    EarthQuakeRecord mItem;
 
     ViewHolder(View view) {
       super(view);
@@ -89,7 +87,6 @@ public class EarthQuakeRecordListAdapter
       mDateOccurred = (TextView) view.findViewById(R.id.date_occurred);
       mPlaceOccurred = (TextView) view.findViewById(R.id.place_occurred);
       mMagnitude = (TextView) view.findViewById(R.id.magnitude);
-      mItem = null;
     }
   }
 }
