@@ -25,7 +25,7 @@ class EarthQuakeAPIRecord {
     return mProperties.mMagnitude;
   }
 
-  public String getPlace() {
+  String getPlace() {
     return mProperties.mPlace;
   }
 
@@ -33,16 +33,16 @@ class EarthQuakeAPIRecord {
     return mProperties.mTime;
   }
 
-  public String getTsunami() {
+  String getTsunami() {
     return mProperties.mTsunami;
   }
 
-  public String getLongitude() {
+  String getLongitude() {
     return mGeometry.mCoordinates.size() > 0 ?
         mGeometry.mCoordinates.get(0) : "0.0";
   }
 
-  public String getLatitude() {
+  String getLatitude() {
     return mGeometry.mCoordinates.size() > 1 ?
         mGeometry.mCoordinates.get(1) : "0.0";
   }

@@ -20,4 +20,5 @@
     <string name="detail_header_tsunami">Is tsunami risk?</string>
     <string name="detail_header_latitude">Latitude</string>
     <string name="detail_header_longitude">Longitude</string>
+    <string name="action_refresh_list">Refresh List</string>
 </resources>

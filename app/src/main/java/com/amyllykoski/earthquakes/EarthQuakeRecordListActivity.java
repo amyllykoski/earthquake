@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,17 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
 
-import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.*;
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.KEY_CURRENT_VALUE;
+import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.newInstance;
 
 public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     MinimumMagnitudeSettingListener {
 
-  private int mMinMagnitude = 30; // Divided by 10 before querying
+  public static final int DEFAULT_MINIMUM_MAGNITUDE = 30;
+  private int mMinMagnitude = DEFAULT_MINIMUM_MAGNITUDE; // Divided by 10 before querying
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +35,8 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     if (savedInstanceState != null) {
       mMinMagnitude = savedInstanceState.getInt(KEY_CURRENT_VALUE);
     }
+    JodaTimeAndroid.init(this);
     setupToolbar();
-    setupFAB();
     load();
   }
 
@@ -54,6 +56,10 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
         dialog.show(getSupportFragmentManager(), "MagnitudeSetting");
         return true;
 
+      case R.id.action_refresh:
+        load();
+        return true;
+
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -71,33 +77,24 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     load();
   }
 
-  private void setupFAB() {
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-        load();
-      }
-    });
-  }
-
   private void load() {
-    View view = findViewById(R.id.earthquakerecord_list);
     EarthQuakeClient client = new EarthQuakeClient();
     RecyclerView earthQuakeList = (RecyclerView) findViewById(R.id.earthquakerecord_list);
     earthQuakeList.addItemDecoration(new DividerItemDecoration(earthQuakeList.getContext(),
         new LinearLayoutManager(this).getOrientation()));
+
     EarthQuakeRecordListAdapter adapter = new EarthQuakeRecordListAdapter(
         (RecyclerView) findViewById(R.id.earthquakerecord_list),
         (TextView) findViewById(R.id.empty_view));
     earthQuakeList.setAdapter(adapter);
+
     if (!isConnectedToNetwork()) {
-      Snackbar.make(view, "No network connection.", Snackbar.LENGTH_LONG)
+      Snackbar.make(earthQuakeList, "No network connection.", Snackbar.LENGTH_LONG)
           .setAction("Action", null).show();
     } else {
       client.execute(adapter, mMinMagnitude / 10.0 + "");
+      Snackbar.make(earthQuakeList, "Refreshing list.", Snackbar.LENGTH_LONG)
+          .setAction("Action", null).show();
     }
   }
 
