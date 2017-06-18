@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.*;
 import android.support.v7.widget.DividerItemDecoration;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +15,10 @@ import android.view.View;
 
 import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
 
-public class EarthQuakeRecordListActivity extends AppCompatActivity {
+public class EarthQuakeRecordListActivity extends AppCompatActivity implements
+    MinimumMagnitudeSettingListener {
+
+  private int mMinMagnitude = 30; // Divided by 10 before querying
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,20 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_set_magnitude:
-        Log.d("Paska", "clicked");
+        MagnitudeSettingDialog dialog =
+            MagnitudeSettingDialog.newInstance(mMinMagnitude);
+        dialog.show(getSupportFragmentManager(), "MagnitudeSetting");
         return true;
 
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public void onMinimumMagnitudeSet(int magnitude) {
+    mMinMagnitude = magnitude;
+    load();
   }
 
   private void setupFAB() {
@@ -70,7 +82,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
         new LinearLayoutManager(this).getOrientation()));
     EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter();
     r.setAdapter(a);
-    client.execute(a, "3.1");
+    client.execute(a, mMinMagnitude / 10.0 + "");
   }
 
   private void setupToolbar() {

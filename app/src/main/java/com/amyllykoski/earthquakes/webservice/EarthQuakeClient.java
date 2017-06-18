@@ -30,6 +30,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
 
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
   private static final String FORMAT = "geojson";
+  public static final String ORDER_BY_TIME = "time";
   private final String TAG = this.getClass().getSimpleName();
 
   private EarthQuakeRecordListAdapter mAdapter;
@@ -53,7 +54,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
 
     EarthquakeAPI earthquakeAPI = retrofit.create(EarthquakeAPI.class);
     Call<EarthQuakeAPIResponse> call =
-        earthquakeAPI.getEarthQuakes(FORMAT, minMagnitude, startTime());
+        earthquakeAPI.getEarthQuakes(FORMAT, minMagnitude, startTime(), ORDER_BY_TIME);
     call.enqueue(this);
   }
 

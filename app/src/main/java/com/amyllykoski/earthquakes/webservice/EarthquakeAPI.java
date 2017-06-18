@@ -9,5 +9,6 @@ public interface EarthquakeAPI {
   Call<EarthQuakeAPIResponse> getEarthQuakes(
       @Query("format") String format,
       @Query("minmagnitude") String minMagnitude,
-      @Query("starttime") String startTime);
+      @Query("starttime") String startTime,
+      @Query("orderby") String orderBy);
 }
