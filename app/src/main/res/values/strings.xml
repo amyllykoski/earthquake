@@ -6,4 +6,9 @@
     <string name="list_header_place">Place</string>
     <string name="list_header_magnitude">Mag</string>
     <string name="action_set_minimum_magnitude">Set Minimum Magnitude</string>
+    <string name="dialog_set_minimum_magnitude">Set Minimum Magnitude</string>
+    <string name="dialog_set_button">Set</string>
+    <string name="dialog_cancel_button">Cancel</string>
+    <string name="no_records_found">No records found.</string>
+    <string name="setting_current_value">Current value</string>
 </resources>

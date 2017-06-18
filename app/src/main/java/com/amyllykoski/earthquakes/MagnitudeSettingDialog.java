@@ -1,6 +1,5 @@
 package com.amyllykoski.earthquakes;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 public class MagnitudeSettingDialog extends DialogFragment {
   private static final String KEY_INITIAL_VALUE = "INITIAL_VALUE";
-  private static final String KEY_CURRENT_VALUE = "CURRENT_VALUE";
+  public static final String KEY_CURRENT_VALUE = "CURRENT_VALUE";
   private static final int DEFAULT_VALUE = 30;
   private static final int NOT_SET = -1;
 
@@ -36,14 +35,14 @@ public class MagnitudeSettingDialog extends DialogFragment {
       mCurrentValue = savedInstanceState.getInt(KEY_CURRENT_VALUE);
     }
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    builder.setMessage("Set Minimum Magnitude")
+    builder.setMessage(R.string.dialog_set_minimum_magnitude)
         .setView(R.layout.magnitude_setting)
-        .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+        .setPositiveButton(R.string.dialog_set_button, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
             mListener.onMinimumMagnitudeSet(mCurrentValue);
           }
         })
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.dialog_cancel_button, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
           }
         });
@@ -80,10 +79,8 @@ public class MagnitudeSettingDialog extends DialogFragment {
         currentValue.setText(String.format("%s", progress / 10.0));
       }
 
-
       public void onStartTrackingTouch(SeekBar arg0) {
       }
-
 
       public void onStopTrackingTouch(SeekBar seekBar) {
       }
@@ -94,6 +91,5 @@ public class MagnitudeSettingDialog extends DialogFragment {
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putInt(KEY_CURRENT_VALUE, mCurrentValue);
-
   }
 }

@@ -4,43 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_weight="1"
-            android:text="@string/list_header_time"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_weight="5"
-            android:text="@string/list_header_place"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_weight="1"
-            android:text="@string/list_header_magnitude"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"/>
-    </LinearLayout>
+    <include layout="@layout/earthquakerecord_list_header"/>
 
     <android.support.v7.widget.RecyclerView android:id="@+id/earthquakerecord_list"
                                             android:name="com.amyllykoski.earthquakes.EarthQuakeRecordListFragment"
@@ -54,4 +18,14 @@
                                             app:layoutManager="LinearLayoutManager"
                                             tools:context="com.amyllykoski.earthquakes.EarthQuakeRecordListActivity"
                                             tools:listitem="@layout/earthquakerecord_list_content"/>
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_records_found"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:visibility="gone"/>
 </LinearLayout>

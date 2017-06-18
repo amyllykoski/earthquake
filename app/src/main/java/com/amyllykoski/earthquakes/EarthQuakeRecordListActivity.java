@@ -12,8 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
+
+import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.*;
 
 public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     MinimumMagnitudeSettingListener {
@@ -24,10 +27,11 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_earthquakerecord_list);
-
+    if (savedInstanceState != null) {
+      mMinMagnitude = savedInstanceState.getInt(KEY_CURRENT_VALUE);
+    }
     setupToolbar();
     setupFAB();
-//    setupRecyclerView((RecyclerView) findViewById(R.id.earthquakerecord_list));
   }
 
   @Override
@@ -48,13 +52,19 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     switch (item.getItemId()) {
       case R.id.action_set_magnitude:
         MagnitudeSettingDialog dialog =
-            MagnitudeSettingDialog.newInstance(mMinMagnitude);
+            newInstance(mMinMagnitude);
         dialog.show(getSupportFragmentManager(), "MagnitudeSetting");
         return true;
 
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt(KEY_CURRENT_VALUE, mMinMagnitude);
   }
 
   @Override
@@ -77,12 +87,15 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
 
   private void load() {
     EarthQuakeClient client = new EarthQuakeClient();
-    RecyclerView r = (RecyclerView) findViewById(R.id.earthquakerecord_list);
-    r.addItemDecoration(new DividerItemDecoration(r.getContext(),
+    RecyclerView earthQuakeList = (RecyclerView) findViewById(R.id.earthquakerecord_list);
+    earthQuakeList.addItemDecoration(new DividerItemDecoration(earthQuakeList.getContext(),
         new LinearLayoutManager(this).getOrientation()));
-    EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter();
-    r.setAdapter(a);
-    client.execute(a, mMinMagnitude / 10.0 + "");
+    EarthQuakeRecordListAdapter adapter = new EarthQuakeRecordListAdapter(
+        (RecyclerView) findViewById(R.id.earthquakerecord_list),
+        (TextView) findViewById(R.id.empty_view));
+    earthQuakeList.setAdapter(adapter);
+
+    client.execute(adapter, mMinMagnitude / 10.0 + "");
   }
 
   private void setupToolbar() {

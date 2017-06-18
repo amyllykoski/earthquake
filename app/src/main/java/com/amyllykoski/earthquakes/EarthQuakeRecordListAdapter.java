@@ -16,11 +16,20 @@ import java.util.List;
 public class EarthQuakeRecordListAdapter
     extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder> {
 
+  private RecyclerView mNonEmptyView;
+  private TextView mEmptyView;
+
   private List<EarthQuakeRecord> mValues = new ArrayList<>();
+
+  public EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
+    mNonEmptyView = nonEmptyView;
+    mEmptyView = emptyView;
+  }
 
   public void setItems(List<EarthQuakeRecord> items) {
     mValues = items;
     notifyDataSetChanged();
+    updateListVisibility(items);
   }
 
   @Override
@@ -51,6 +60,16 @@ public class EarthQuakeRecordListAdapter
   @Override
   public int getItemCount() {
     return mValues.size();
+  }
+
+  private void updateListVisibility(List<EarthQuakeRecord> items) {
+    if (items.isEmpty()) {
+      mNonEmptyView.setVisibility(View.GONE);
+      mEmptyView.setVisibility(View.VISIBLE);
+    } else {
+      mNonEmptyView.setVisibility(View.VISIBLE);
+      mEmptyView.setVisibility(View.GONE);
+    }
   }
 
   class ViewHolder extends RecyclerView.ViewHolder {
