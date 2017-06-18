@@ -1,4 +1,8 @@
-package com.amyllykoski.earthquakes;
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
+package com.amyllykoski.earthquakes.ui;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 import com.google.gson.Gson;
 

@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) 2017. Antti Myllykoski.
+  -->
+
 <resources>
     <string name="app_name">EarthQuakes</string>
     <string name="title_earthquakerecord_detail">EarthQuakeRecord Detail

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. Antti Myllykoski.
+  -->
+
 <manifest package="com.amyllykoski.earthquakes"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
@@ -15,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".EarthQuakeRecordListActivity"
+            android:name=".ui.EarthQuakeRecordListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,13 +29,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EarthQuakeRecordDetailActivity"
+            android:name=".ui.EarthQuakeRecordDetailActivity"
             android:label="@string/title_earthquakerecord_detail"
-            android:parentActivityName=".EarthQuakeRecordListActivity"
+            android:parentActivityName=".ui.EarthQuakeRecordListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.amyllykoski.earthquakes.EarthQuakeRecordListActivity"/>
+                android:value="com.amyllykoski.earthquakes.ui.EarthQuakeRecordListActivity"/>
         </activity>
     </application>
 

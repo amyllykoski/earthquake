@@ -1,4 +1,8 @@
-package com.amyllykoski.earthquakes;
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
+package com.amyllykoski.earthquakes.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +10,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.amyllykoski.earthquakes.R;
 
 public class EarthQuakeRecordDetailActivity extends AppCompatActivity {
 

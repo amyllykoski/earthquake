@@ -1,4 +1,8 @@
-package com.amyllykoski.earthquakes;
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
+package com.amyllykoski.earthquakes.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +13,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.amyllykoski.earthquakes.R;
 
 public class MagnitudeSettingDialog extends DialogFragment {
   private static final String KEY_INITIAL_VALUE = "INITIAL_VALUE";

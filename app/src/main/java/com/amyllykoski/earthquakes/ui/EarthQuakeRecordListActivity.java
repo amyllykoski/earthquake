@@ -1,4 +1,8 @@
-package com.amyllykoski.earthquakes;
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
+package com.amyllykoski.earthquakes.ui;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -15,12 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
 
 import net.danlew.android.joda.JodaTimeAndroid;
-
-import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.KEY_CURRENT_VALUE;
-import static com.amyllykoski.earthquakes.MagnitudeSettingDialog.newInstance;
 
 public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     MinimumMagnitudeSettingListener {
@@ -33,7 +35,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_earthquakerecord_list);
     if (savedInstanceState != null) {
-      mMinMagnitude = savedInstanceState.getInt(KEY_CURRENT_VALUE);
+      mMinMagnitude = savedInstanceState.getInt(MagnitudeSettingDialog.KEY_CURRENT_VALUE);
     }
     JodaTimeAndroid.init(this);
     setupToolbar();
@@ -52,7 +54,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     switch (item.getItemId()) {
       case R.id.action_set_magnitude:
         MagnitudeSettingDialog dialog =
-            newInstance(mMinMagnitude);
+            MagnitudeSettingDialog.newInstance(mMinMagnitude);
         dialog.show(getSupportFragmentManager(), "MagnitudeSetting");
         return true;
 
@@ -68,7 +70,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putInt(KEY_CURRENT_VALUE, mMinMagnitude);
+    outState.putInt(MagnitudeSettingDialog.KEY_CURRENT_VALUE, mMinMagnitude);
   }
 
   @Override

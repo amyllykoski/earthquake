@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
 package com.amyllykoski.earthquakes.model;
 
 import java.text.SimpleDateFormat;

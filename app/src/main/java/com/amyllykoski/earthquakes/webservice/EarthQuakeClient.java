@@ -1,9 +1,13 @@
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
 package com.amyllykoski.earthquakes.webservice;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.amyllykoski.earthquakes.EarthQuakeRecordListAdapter;
+import com.amyllykoski.earthquakes.ui.EarthQuakeRecordListAdapter;
 import com.amyllykoski.earthquakes.model.Coordinates;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 import com.amyllykoski.earthquakes.model.Magnitude;

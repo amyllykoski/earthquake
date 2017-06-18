@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017. Antti Myllykoski.
+ */
+
 package com.amyllykoski.earthquakes.webservice;
 
 import com.google.gson.annotations.Expose;
