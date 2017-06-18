@@ -29,12 +29,6 @@ public class EarthQuakeRecordDetailFragment extends Fragment {
     Gson gson = new Gson();
     mEarthQuakeRecord = gson.fromJson((String) getArguments().get(ARG_ITEM_ID),
         EarthQuakeRecord.class);
-    Activity activity = this.getActivity();
-    CollapsingToolbarLayout appBarLayout =
-        (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-    if (appBarLayout != null) {
-      appBarLayout.setTitle(mEarthQuakeRecord.mTime.getTime("yyyy-MM-dd hh:mm aa"));
-    }
   }
 
   @Override
@@ -42,9 +36,31 @@ public class EarthQuakeRecordDetailFragment extends Fragment {
                            Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.earthquakerecord_detail, container, false);
     if (mEarthQuakeRecord != null) {
-      ((TextView) rootView.findViewById(R.id.earthquakerecord_detail))
-          .setText(mEarthQuakeRecord.toString());
+      ((TextView) rootView.findViewById(R.id.detail_time))
+          .setText(mEarthQuakeRecord.mTime.getTime(getString(R.string.date_format_full)));
+      ((TextView) rootView.findViewById(R.id.detail_place))
+          .setText(mEarthQuakeRecord.mPlace.get());
+      ((TextView) rootView.findViewById(R.id.detail_tsunami))
+          .setText(mEarthQuakeRecord.mIsTsunamiPotential ?
+              getString(R.string.is_tsunami_yes) : getString(R.string.is_tsunami_no));
+      ((TextView) rootView.findViewById(R.id.detail_magnitude))
+          .setText(mEarthQuakeRecord.mMagnitude.get());
+      ((TextView) rootView.findViewById(R.id.detail_latitude))
+          .setText(mEarthQuakeRecord.mCoordinates.getLatitude());
+      ((TextView) rootView.findViewById(R.id.detail_longitude))
+          .setText(mEarthQuakeRecord.mCoordinates.getLongitude());
     }
+    setAppBarTitle();
     return rootView;
+  }
+
+  private void setAppBarTitle() {
+    Activity activity = getActivity();
+    CollapsingToolbarLayout appBarLayout =
+        (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+    if (appBarLayout != null) {
+      appBarLayout.setTitle(mEarthQuakeRecord
+          .mTime.getTime(getString(R.string.date_format_full)));
+    }
   }
 }

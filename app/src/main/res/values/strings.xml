@@ -11,4 +11,13 @@
     <string name="dialog_cancel_button">Cancel</string>
     <string name="no_records_found">No records found.</string>
     <string name="setting_current_value">Current value</string>
+    <string name="date_format_full">yyyy-MM-dd hh:mm aa</string>
+    <string name="is_tsunami_yes">YES</string>
+    <string name="is_tsunami_no">NO</string>
+    <string name="detail_header_time">Time</string>
+    <string name="detail_header_place">Place</string>
+    <string name="detail_header_magnitude">Magnitude</string>
+    <string name="detail_header_tsunami">Is tsunami risk?</string>
+    <string name="detail_header_latitude">Latitude</string>
+    <string name="detail_header_longitude">Longitude</string>
 </resources>
