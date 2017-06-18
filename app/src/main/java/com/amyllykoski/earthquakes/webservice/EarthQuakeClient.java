@@ -12,9 +12,11 @@ import com.amyllykoski.earthquakes.model.Time;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.text.SimpleDateFormat;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,7 +32,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
 
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
   private static final String FORMAT = "geojson";
-  public static final String ORDER_BY_TIME = "time";
+  private static final String ORDER_BY_TIME = "time";
   private final String TAG = this.getClass().getSimpleName();
 
   private EarthQuakeRecordListAdapter mAdapter;
@@ -59,30 +61,34 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   }
 
   private String startTime() {
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.DAY_OF_YEAR, -1);
-    return formatter.format(calendar.getTime());
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+        .withLocale(Locale.getDefault());
+    DateTime start = DateTime.now().minusDays(1);
+    return formatter.print(start);
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Override
   public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call,
                          @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
       updateAdapter(response);
     } else {
-      if (response.errorBody() == null) Log.e(TAG, "Body is null.");
-      else Log.e(TAG, response.errorBody().toString());
+      if (response.errorBody() != null)
+        Log.e(TAG, response.errorBody().toString());
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   private void updateAdapter(@NonNull Response<EarthQuakeAPIResponse> response) {
     ArrayList<EarthQuakeRecord> items = new ArrayList<>();
     List<EarthQuakeAPIRecord> earthQuakeRecordList;
-    if (response.body() == null)
-      earthQuakeRecordList = new ArrayList<EarthQuakeAPIRecord>();
-    else
+    if (response.body() == null) {
+      earthQuakeRecordList = new ArrayList<>();
+    } else {
       earthQuakeRecordList = response.body().getRecords();
+    }
+
     for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
       items.add(convert(record));
     }
