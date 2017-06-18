@@ -17,9 +17,9 @@ public class Time {
     return mMillis;
   }
 
-  public String getDate(String dateFormat) {
+  public String getTime(String timeFormat) {
     SimpleDateFormat formatter =
-        new SimpleDateFormat(dateFormat == null ? "hh:mm aa" : dateFormat,
+        new SimpleDateFormat(timeFormat == null ? "hh:mm aa" : timeFormat,
             Locale.getDefault());
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(Long.parseLong(mMillis));

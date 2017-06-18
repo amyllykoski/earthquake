@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class EarthQuakeRecordListAdapter
 
   private List<EarthQuakeRecord> mValues = new ArrayList<>();
 
-  public EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
+  EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
     mNonEmptyView = nonEmptyView;
     mEmptyView = emptyView;
   }
@@ -42,16 +43,19 @@ public class EarthQuakeRecordListAdapter
   @Override
   public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.mItem = mValues.get(position);
-    holder.mDateOccurred.setText(mValues.get(position).mTime.getDate(null));
+    holder.mDateOccurred.setText(mValues.get(position).mTime.getTime(null));
     holder.mPlaceOccurred.setText(mValues.get(position).mPlace.get());
     holder.mMagnitude.setText(mValues.get(position).mMagnitude.get());
 
+    final int pos = position;
     holder.mView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Context context = v.getContext();
         Intent intent = new Intent(context, EarthQuakeRecordDetailActivity.class);
-        intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID, holder.mItem.mTime.toString());
+        Gson gson = new Gson();
+        intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID,
+            gson.toJson(mValues.get(pos)));
         context.startActivity(intent);
       }
     });

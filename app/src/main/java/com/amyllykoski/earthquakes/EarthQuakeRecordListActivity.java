@@ -32,11 +32,6 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     }
     setupToolbar();
     setupFAB();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
     load();
   }
 
