@@ -1,7 +1,6 @@
 package com.amyllykoski.earthquakes;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +44,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity {
     RecyclerView r = (RecyclerView) findViewById(R.id.earthquakerecord_list);
     r.addItemDecoration(new DividerItemDecoration(r.getContext(),
         new LinearLayoutManager(this).getOrientation()));
-    EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter(getSupportFragmentManager());
+    EarthQuakeRecordListAdapter a = new EarthQuakeRecordListAdapter();
     r.setAdapter(a);
     client.execute(a, "3");
   }
