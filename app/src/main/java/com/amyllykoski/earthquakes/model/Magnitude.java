@@ -15,4 +15,11 @@ public class Magnitude {
   public String get() {
     return mMagnitude;
   }
+
+  @Override
+  public String toString() {
+    return "Magnitude{" +
+        "mMagnitude='" + mMagnitude + '\'' +
+        '}';
+  }
 }

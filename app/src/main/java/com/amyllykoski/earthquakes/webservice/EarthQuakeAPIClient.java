@@ -99,7 +99,7 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
     for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
       items.add(convertFrom(record));
     }
-    mRecordReceiver.setRecords(items);
+    mRecordReceiver.onSuccess(items);
   }
 
   private String startTime() {

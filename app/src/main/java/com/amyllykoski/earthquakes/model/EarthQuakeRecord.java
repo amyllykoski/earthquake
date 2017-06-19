@@ -24,4 +24,15 @@ public class EarthQuakeRecord {
     mIsTsunamiPotential = isTsunamiPotential;
     mCoordinates = coordinates;
   }
+
+  @Override
+  public String toString() {
+    return "EarthQuakeRecord{" +
+        "mTime=" + mTime +
+        ", mMagnitude=" + mMagnitude +
+        ", mPlace=" + mPlace +
+        ", mIsTsunamiPotential=" + mIsTsunamiPotential +
+        ", mCoordinates=" + mCoordinates +
+        '}';
+  }
 }

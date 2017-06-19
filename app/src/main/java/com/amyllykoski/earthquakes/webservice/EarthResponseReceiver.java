@@ -9,6 +9,6 @@ import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 import java.util.List;
 
 public interface EarthResponseReceiver {
-  void setRecords(final List<EarthQuakeRecord> records);
+  void onSuccess(final List<EarthQuakeRecord> records);
   void onFailure(final String message, final String details);
 }

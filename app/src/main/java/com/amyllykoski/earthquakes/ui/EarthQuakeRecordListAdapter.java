@@ -67,7 +67,7 @@ class EarthQuakeRecordListAdapter
   }
 
   @Override
-  public void setRecords(List<EarthQuakeRecord> records) {
+  public void onSuccess(List<EarthQuakeRecord> records) {
     mRecords = records;
     notifyDataSetChanged();
     updateListVisibility(records);
