@@ -1,14 +1,9 @@
-/*
- * Copyright (c) 2017. Antti Myllykoski.
- */
-
 package com.amyllykoski.earthquakes.ui;
 
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -24,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -31,7 +27,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class EarthQuakeRecordListActivityTest {
 
@@ -80,6 +75,30 @@ public class EarthQuakeRecordListActivityTest {
             0),
             isDisplayed()));
     linearLayout.check(matches(isDisplayed()));
+
+    ViewInteraction actionMenuItemView = onView(
+        allOf(withId(R.id.action_set_magnitude), withContentDescription("Set Minimum Magnitude"), isDisplayed()));
+    actionMenuItemView.perform(click());
+
+    ViewInteraction textView4 = onView(
+        allOf(withId(android.R.id.message), withText("Set Minimum Magnitude"),
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.scrollView),
+                    0),
+                1),
+            isDisplayed()));
+    textView4.check(matches(withText("Set Minimum Magnitude")));
+
+    ViewInteraction textView5 = onView(
+        allOf(withId(R.id.current_value), withText("3.0"),
+            childAtPosition(
+                childAtPosition(
+                    IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                    0),
+                1),
+            isDisplayed()));
+    textView5.check(matches(withText("3.0")));
 
   }
 
