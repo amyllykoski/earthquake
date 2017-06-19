@@ -42,21 +42,21 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
   private static final String WEB_FAILURE_MESSAGE = "Failed to communicate with " +
       "USGS Earthquakes.";
 
-  private EarthResponseReceiver mRecordReceiver;
+  private EarthQuakeResponseReceiver mRecordReceiver;
 
   /**
-   * Performs a query to the USGS webservice.
+   * Executes a query to the USGS webservice.
    *
-   * @param recordReceiver The response (success and failure) is delivered to
-   *                       this inteface.
-   * @param minMagnitude   Minimum magnitude used to filter earthquakes on their
-   *                       magnitudes.
-   * @param baseURL        Base URL to the webservice.
+   * @param responseReceiver The response (success and failure) is delivered to
+   *                         this inteface.
+   * @param minMagnitude     Minimum magnitude used to filter earthquakes on their
+   *                         magnitudes.
+   * @param baseURL          Base URL to the webservice.
    */
-  void execute(final EarthResponseReceiver recordReceiver,
+  void execute(final EarthQuakeResponseReceiver responseReceiver,
                final String minMagnitude,
                final String baseURL) {
-    mRecordReceiver = recordReceiver;
+    mRecordReceiver = responseReceiver;
 
     Gson gson = new GsonBuilder()
         .setLenient()
@@ -85,7 +85,7 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
    * @param minMagnitude   Minimum magnitude used to filter earthquakes on their
    *                       magnitudes.
    */
-  public void execute(final EarthResponseReceiver recordReceiver,
+  public void execute(final EarthQuakeResponseReceiver recordReceiver,
                       final String minMagnitude) {
     execute(recordReceiver, minMagnitude, BASE_URL);
   }

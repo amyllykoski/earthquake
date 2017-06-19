@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * An interface which must be implemented by the webservice clients.
  */
-public interface EarthResponseReceiver {
+public interface EarthQuakeResponseReceiver {
   /**
    * In case the query returns successfully, the earthquake records are parsed
    * and delivered as a list.

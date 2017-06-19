@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
-import com.amyllykoski.earthquakes.webservice.EarthResponseReceiver;
+import com.amyllykoski.earthquakes.webservice.EarthQuakeResponseReceiver;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 class EarthQuakeRecordListAdapter
     extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder>
-    implements EarthResponseReceiver {
+    implements EarthQuakeResponseReceiver {
 
   private RecyclerView mNonEmptyView;
   private TextView mEmptyView;

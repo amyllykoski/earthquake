@@ -30,7 +30,7 @@ public class EarthQuakeAPIClientTest {
 
   private EarthQuakeAPIClient sut;
 
-  private class Helper implements EarthResponseReceiver {
+  private class Helper implements EarthQuakeResponseReceiver {
 
     private List<EarthQuakeRecord> mRecords = new ArrayList<>();
     private String mFailureMessage;
