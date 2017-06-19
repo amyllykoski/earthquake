@@ -2,7 +2,6 @@ gradle/
 .idea/
 local.properties
 build/
-five-by-five-rx.iml
 app/app.iml
 .gradle
 .idea/compiler.xml
@@ -10,3 +9,4 @@ app/app.iml
 .idea/misc.xml
 .idea/modules.xml
 .DS_Store
+earthquake.iml

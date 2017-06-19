@@ -14,20 +14,20 @@ import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
-import com.amyllykoski.earthquakes.webservice.EarthQuakeRecordReceiver;
+import com.amyllykoski.earthquakes.webservice.EarthResponseReceiver;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthQuakeRecordListAdapter
+class EarthQuakeRecordListAdapter
     extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder>
-    implements EarthQuakeRecordReceiver {
+    implements EarthResponseReceiver {
 
   private RecyclerView mNonEmptyView;
   private TextView mEmptyView;
 
-  private List<EarthQuakeRecord> mValues = new ArrayList<>();
+  private List<EarthQuakeRecord> mRecords = new ArrayList<>();
 
   EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
     mNonEmptyView = nonEmptyView;
@@ -43,9 +43,9 @@ public class EarthQuakeRecordListAdapter
 
   @Override
   public void onBindViewHolder(final ViewHolder holder, int position) {
-    holder.mDateOccurred.setText(mValues.get(position).mTime.getTime(null));
-    holder.mPlaceOccurred.setText(mValues.get(position).mPlace.get());
-    holder.mMagnitude.setText(mValues.get(position).mMagnitude.get());
+    holder.mDateOccurred.setText(mRecords.get(position).mTime.getTime(null));
+    holder.mPlaceOccurred.setText(mRecords.get(position).mPlace.get());
+    holder.mMagnitude.setText(mRecords.get(position).mMagnitude.get());
 
     final int pos = position;
     holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class EarthQuakeRecordListAdapter
         Intent intent = new Intent(context, EarthQuakeRecordDetailActivity.class);
         Gson gson = new Gson();
         intent.putExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID,
-            gson.toJson(mValues.get(pos)));
+            gson.toJson(mRecords.get(pos)));
         context.startActivity(intent);
       }
     });
@@ -63,14 +63,20 @@ public class EarthQuakeRecordListAdapter
 
   @Override
   public int getItemCount() {
-    return mValues.size();
+    return mRecords.size();
   }
 
   @Override
   public void setRecords(List<EarthQuakeRecord> records) {
-    mValues = records;
+    mRecords = records;
     notifyDataSetChanged();
     updateListVisibility(records);
+  }
+
+  @Override
+  public void onFailure(final String message, final String details) {
+    updateListVisibility(new ArrayList<EarthQuakeRecord>());
+    mEmptyView.setText(message);
   }
 
   private void updateListVisibility(List<EarthQuakeRecord> items) {

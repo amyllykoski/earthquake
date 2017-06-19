@@ -5,7 +5,6 @@
 package com.amyllykoski.earthquakes.webservice;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.amyllykoski.earthquakes.model.Coordinates;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
@@ -36,13 +35,13 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
   private static final String FORMAT = "geojson";
   private static final String ORDER_BY_TIME = "time";
-  private final String TAG = this.getClass().getSimpleName();
+  private static final String WEB_FAILURE_MESSAGE = "Failed to communicate with USGS Earthquakes.";
 
-  private EarthQuakeRecordReceiver mRecordReceiver;
+  private EarthResponseReceiver mRecordReceiver;
 
-  public void execute(final EarthQuakeRecordReceiver recordReceiver,
-                      final String minMagnitude,
-                      final String baseURL) {
+  void execute(final EarthResponseReceiver recordReceiver,
+               final String minMagnitude,
+               final String baseURL) {
     mRecordReceiver = recordReceiver;
 
     Gson gson = new GsonBuilder()
@@ -64,7 +63,7 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
     call.enqueue(this);
   }
 
-  public void execute(final EarthQuakeRecordReceiver recordReceiver,
+  public void execute(final EarthResponseReceiver recordReceiver,
                       final String minMagnitude) {
     execute(recordReceiver, minMagnitude, BASE_URL);
   }
@@ -76,14 +75,15 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
     if (response.isSuccessful()) {
       updateRecordReceiver(response);
     } else {
-      if (response.errorBody() != null)
-        Log.e(TAG, response.errorBody().toString());
+      if (response.errorBody() != null) {
+        mRecordReceiver.onFailure(WEB_FAILURE_MESSAGE, response.errorBody().toString());
+      }
     }
   }
 
   @Override
   public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Throwable t) {
-    Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
+    mRecordReceiver.onFailure(WEB_FAILURE_MESSAGE, t.getLocalizedMessage());
   }
 
   @SuppressWarnings("ConstantConditions")
