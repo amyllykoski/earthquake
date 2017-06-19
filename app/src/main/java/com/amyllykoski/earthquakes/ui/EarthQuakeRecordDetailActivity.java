@@ -12,6 +12,9 @@ import android.view.MenuItem;
 
 import com.amyllykoski.earthquakes.R;
 
+/**
+ * Displays given earthquake record details in app UI.
+ */
 public class EarthQuakeRecordDetailActivity extends AppCompatActivity {
 
   @Override

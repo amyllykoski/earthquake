@@ -30,15 +30,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Main access point to use the sebservice package in order to obtain earth
+ * quake records from USGS webservice.
+ */
 public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
 
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
   private static final String FORMAT = "geojson";
   private static final String ORDER_BY_TIME = "time";
-  private static final String WEB_FAILURE_MESSAGE = "Failed to communicate with USGS Earthquakes.";
+  private static final String WEB_FAILURE_MESSAGE = "Failed to communicate with " +
+      "USGS Earthquakes.";
 
   private EarthResponseReceiver mRecordReceiver;
 
+  /**
+   * Performs a query to the USGS webservice.
+   *
+   * @param recordReceiver The response (success and failure) is delivered to
+   *                       this inteface.
+   * @param minMagnitude   Minimum magnitude used to filter earthquakes on their
+   *                       magnitudes.
+   * @param baseURL        Base URL to the webservice.
+   */
   void execute(final EarthResponseReceiver recordReceiver,
                final String minMagnitude,
                final String baseURL) {
@@ -50,7 +64,7 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
             new EarthQuakeRecordDeserializer())
         .create();
 
-    OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.BASIC);
+    OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.NONE);
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(baseURL)
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -63,6 +77,14 @@ public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
     call.enqueue(this);
   }
 
+  /**
+   * Performs a query to the USGS webservice. Uses default base URL.
+   *
+   * @param recordReceiver The response (success and failure) is delivered to
+   *                       this inteface.
+   * @param minMagnitude   Minimum magnitude used to filter earthquakes on their
+   *                       magnitudes.
+   */
   public void execute(final EarthResponseReceiver recordReceiver,
                       final String minMagnitude) {
     execute(recordReceiver, minMagnitude, BASE_URL);

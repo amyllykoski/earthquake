@@ -16,10 +16,15 @@ import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.R;
 
+/**
+ * The dialog for setting minimum magnitude for webservice queries.
+ */
 public class MagnitudeSettingDialog extends DialogFragment {
   private static final String KEY_INITIAL_VALUE = "INITIAL_VALUE";
   public static final String KEY_CURRENT_VALUE = "CURRENT_VALUE";
+  public static final int MAX_MAGNITUDE_DIVIDED_BY_TEN = 100;
   private static final int DEFAULT_VALUE = 30;
+  public static final int INCREMENT_SIZE = 1;
   private static final int NOT_SET = -1;
 
   private int mCurrentValue = NOT_SET;
@@ -62,7 +67,7 @@ public class MagnitudeSettingDialog extends DialogFragment {
       mListener = (MinimumMagnitudeSettingListener) context;
     } catch (ClassCastException e) {
       throw new ClassCastException(context.toString()
-          + " must implement MinimumMagnitudeSettingListener!");
+          + getString(R.string.implementation_missing));
     }
   }
 
@@ -71,8 +76,8 @@ public class MagnitudeSettingDialog extends DialogFragment {
     super.onStart();
     SeekBar seekBar = (SeekBar) getDialog().findViewById(R.id.seekbar);
     final TextView currentValue = (TextView) getDialog().findViewById(R.id.current_value);
-    seekBar.setMax(100);
-    seekBar.setKeyProgressIncrement(1);
+    seekBar.setMax(MAX_MAGNITUDE_DIVIDED_BY_TEN);
+    seekBar.setKeyProgressIncrement(INCREMENT_SIZE);
     mCurrentValue = mCurrentValue == NOT_SET ?
         getArguments().getInt(KEY_INITIAL_VALUE, DEFAULT_VALUE) : mCurrentValue;
     seekBar.setProgress(mCurrentValue);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,6 +25,10 @@ import com.amyllykoski.earthquakes.webservice.EarthQuakeAPIClient;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+/**
+ * Main activity from which the application execution starts. Shows a list of
+ * earthquake events obtained from the web.
+ */
 public class EarthQuakeRecordListActivity extends AppCompatActivity implements
     MinimumMagnitudeSettingListener {
 
@@ -57,11 +62,9 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
             MagnitudeSettingDialog.newInstance(mMinMagnitude);
         dialog.show(getSupportFragmentManager(), "MagnitudeSetting");
         return true;
-
       case R.id.action_refresh:
         load();
         return true;
-
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -87,18 +90,25 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
       return;
     }
 
+    EarthQuakeRecordListAdapter adapter = setEarthQuakeRecordListAdapter(earthQuakeList);
+    queryWebService(earthQuakeList, adapter);
+  }
+
+  private void queryWebService(RecyclerView earthQuakeList, EarthQuakeRecordListAdapter adapter) {
     EarthQuakeAPIClient client = new EarthQuakeAPIClient();
+    client.execute(adapter, String.format("%s", mMinMagnitude / 10.0));
+    Snackbar.make(earthQuakeList, R.string.refreshing_list, Snackbar.LENGTH_LONG).show();
+  }
+
+  @NonNull
+  private EarthQuakeRecordListAdapter setEarthQuakeRecordListAdapter(RecyclerView earthQuakeList) {
     earthQuakeList.addItemDecoration(new DividerItemDecoration(earthQuakeList.getContext(),
         new LinearLayoutManager(this).getOrientation()));
-
     EarthQuakeRecordListAdapter adapter = new EarthQuakeRecordListAdapter(
         (RecyclerView) findViewById(R.id.earthquakerecord_list),
         (TextView) findViewById(R.id.empty_view));
     earthQuakeList.setAdapter(adapter);
-
-
-    client.execute(adapter, String.format("%s", mMinMagnitude / 10.0));
-    Snackbar.make(earthQuakeList, R.string.refreshing_list, Snackbar.LENGTH_LONG).show();
+    return adapter;
   }
 
   private void setupToolbar() {

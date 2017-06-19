@@ -20,6 +20,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A RecyclerView adapter for EarthQuakeRecords.
+ */
 class EarthQuakeRecordListAdapter
     extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder>
     implements EarthResponseReceiver {
@@ -29,6 +32,14 @@ class EarthQuakeRecordListAdapter
 
   private List<EarthQuakeRecord> mRecords = new ArrayList<>();
 
+  /**
+   * Constructs the adapter. The empty list / failure case is handled by
+   * changing the visibility of the emptyView and nonEmptyView.
+   *
+   * @param nonEmptyView This view will display the list of records.
+   * @param emptyView    This view will be displayed in case there's no data or
+   *                     the query returned a failure.
+   */
   EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
     mNonEmptyView = nonEmptyView;
     mEmptyView = emptyView;

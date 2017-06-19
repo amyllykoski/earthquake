@@ -25,7 +25,7 @@ public class TimeTest {
     cal.set(Calendar.SECOND, 12);
     cal.set(Calendar.MILLISECOND, 123);
     sut = new Time(cal.getTimeInMillis() + "");
-    assertEquals("11:15 AM", sut.getTime(null));
+    assertEquals("11:15 AM 08/13", sut.getTime(null));
   }
 
   @Test
@@ -40,7 +40,7 @@ public class TimeTest {
     cal.set(Calendar.MILLISECOND, 123);
 
     sut = new Time(cal.getTimeInMillis() + "");
-    assertEquals("09:20 PM", sut.getTime(null));
+    assertEquals("09:20 PM 08/13", sut.getTime(null));
   }
 
 

@@ -16,6 +16,9 @@ import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 import com.google.gson.Gson;
 
+/**
+ * Displays given earthquake record details in app UI.
+ */
 public class EarthQuakeRecordDetailFragment extends Fragment {
   public static final String ARG_ITEM_ID = "item_id";
   private EarthQuakeRecord mEarthQuakeRecord;

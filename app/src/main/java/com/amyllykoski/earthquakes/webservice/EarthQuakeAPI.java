@@ -8,6 +8,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+/**
+ * HTTP GET interface to USGS earthquake web service. The query structure is
+ * query?&format=geojson&minmagnitude=3.0&starttime=2017-06-18T14:55:08-07:00&orderby=time
+ */
 interface EarthQuakeAPI {
   @GET("/fdsnws/event/1/query?")
   Call<EarthQuakeAPIResponse> getEarthQuakes(
