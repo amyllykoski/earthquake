@@ -15,7 +15,7 @@ public class TimeTest {
   private Time sut;
 
   @Test
-  public void test_getTime_returns_correct_string_AM() throws Exception {
+  public void shouldReturnCorrectStringAM() throws Exception {
     Calendar cal = Calendar.getInstance();
     cal.set(Calendar.YEAR, 2000);
     cal.set(Calendar.MONTH, 7);
@@ -29,7 +29,7 @@ public class TimeTest {
   }
 
   @Test
-  public void test_getTime_returns_correct_string_PM() throws Exception {
+  public void shouldReturnCorrectStringPM() throws Exception {
     Calendar cal = Calendar.getInstance();
     cal.set(Calendar.YEAR, 2000);
     cal.set(Calendar.MONTH, 7);
@@ -45,7 +45,7 @@ public class TimeTest {
 
 
   @Test
-  public void test_getTime_with_custom_formatter() throws Exception {
+  public void shouldApplyCustomFormatter() throws Exception {
     Calendar cal = Calendar.getInstance();
     cal.set(Calendar.YEAR, 2000);
     cal.set(Calendar.MONTH, 7);

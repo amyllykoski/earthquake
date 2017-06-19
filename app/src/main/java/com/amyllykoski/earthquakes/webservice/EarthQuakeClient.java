@@ -94,12 +94,12 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
     }
 
     for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
-      items.add(convert(record));
+      items.add(convertFrom(record));
     }
     mAdapter.setItems(items);
   }
 
-  private EarthQuakeRecord convert(EarthQuakeAPIRecord rec) {
+  private EarthQuakeRecord convertFrom(EarthQuakeAPIRecord rec) {
     return new EarthQuakeRecord(
         new Time(rec.getTime()),
         new Magnitude(rec.getMagnitude()),
