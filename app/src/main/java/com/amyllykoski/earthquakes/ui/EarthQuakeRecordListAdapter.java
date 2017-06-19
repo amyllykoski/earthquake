@@ -14,13 +14,15 @@ import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.R;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
+import com.amyllykoski.earthquakes.webservice.EarthQuakeRecordReceiver;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EarthQuakeRecordListAdapter
-    extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder> {
+    extends RecyclerView.Adapter<EarthQuakeRecordListAdapter.ViewHolder>
+    implements EarthQuakeRecordReceiver {
 
   private RecyclerView mNonEmptyView;
   private TextView mEmptyView;
@@ -30,12 +32,6 @@ public class EarthQuakeRecordListAdapter
   EarthQuakeRecordListAdapter(final RecyclerView nonEmptyView, final TextView emptyView) {
     mNonEmptyView = nonEmptyView;
     mEmptyView = emptyView;
-  }
-
-  public void setItems(List<EarthQuakeRecord> items) {
-    mValues = items;
-    notifyDataSetChanged();
-    updateListVisibility(items);
   }
 
   @Override
@@ -68,6 +64,13 @@ public class EarthQuakeRecordListAdapter
   @Override
   public int getItemCount() {
     return mValues.size();
+  }
+
+  @Override
+  public void setRecords(List<EarthQuakeRecord> records) {
+    mValues = records;
+    notifyDataSetChanged();
+    updateListVisibility(records);
   }
 
   private void updateListVisibility(List<EarthQuakeRecord> items) {

@@ -94,7 +94,7 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
       Snackbar.make(earthQuakeList, "No network connection.", Snackbar.LENGTH_LONG)
           .setAction("Action", null).show();
     } else {
-      client.execute(adapter, mMinMagnitude / 10.0 + "");
+      client.execute(adapter, String.format("%s", mMinMagnitude / 10.0));
       Snackbar.make(earthQuakeList, "Refreshing list.", Snackbar.LENGTH_LONG)
           .setAction("Action", null).show();
     }

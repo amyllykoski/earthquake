@@ -33,7 +33,7 @@ class EarthQuakeAPIRecord {
     return mProperties.mPlace;
   }
 
-  public String getTime() {
+  String getTime() {
     return mProperties.mTime;
   }
 
@@ -66,16 +66,6 @@ class EarthQuakeAPIRecord {
     @Expose
     private String mMagnitude;
 
-    @Override
-    public String toString() {
-      return "Properties{" +
-          "mMagnitude='" + mMagnitude + '\'' +
-          ", mPlace='" + mPlace + '\'' +
-          ", mTime='" + mTime + '\'' +
-          ", mTsunami='" + mTsunami + '\'' +
-          '}';
-    }
-
     @SuppressWarnings("unused")
     @SerializedName("place")
     @Expose
@@ -90,9 +80,24 @@ class EarthQuakeAPIRecord {
     @SerializedName("tsunami")
     @Expose
     private String mTsunami;
+
+    @Override
+    public String toString() {
+      return "Properties{" +
+          "mMagnitude='" + mMagnitude + '\'' +
+          ", mPlace='" + mPlace + '\'' +
+          ", mTime='" + mTime + '\'' +
+          ", mTsunami='" + mTsunami + '\'' +
+          '}';
+    }
   }
 
   private static class Geometry {
+
+    @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
+    @SerializedName("coordinates")
+    @Expose
+    private List<String> mCoordinates = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -100,10 +105,5 @@ class EarthQuakeAPIRecord {
           "mCoordinates=" + mCoordinates +
           '}';
     }
-
-    @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
-    @SerializedName("coordinates")
-    @Expose
-    private List<String> mCoordinates = new ArrayList<>();
   }
 }

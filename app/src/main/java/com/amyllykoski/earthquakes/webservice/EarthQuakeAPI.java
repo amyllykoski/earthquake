@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface EarthQuakeAPI {
+interface EarthQuakeAPI {
   @GET("/fdsnws/event/1/query?")
   Call<EarthQuakeAPIResponse> getEarthQuakes(
       @Query("format") String format,

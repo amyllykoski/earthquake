@@ -7,7 +7,6 @@ package com.amyllykoski.earthquakes.webservice;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.amyllykoski.earthquakes.ui.EarthQuakeRecordListAdapter;
 import com.amyllykoski.earthquakes.model.Coordinates;
 import com.amyllykoski.earthquakes.model.EarthQuakeRecord;
 import com.amyllykoski.earthquakes.model.Magnitude;
@@ -39,11 +38,11 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   private static final String ORDER_BY_TIME = "time";
   private final String TAG = this.getClass().getSimpleName();
 
-  private EarthQuakeRecordListAdapter mAdapter;
+  private EarthQuakeRecordReceiver mRecordReceiver;
 
-  public void execute(final EarthQuakeRecordListAdapter adapter,
+  public void execute(final EarthQuakeRecordReceiver recordReceiver,
                       final String minMagnitude) {
-    mAdapter = adapter;
+    mRecordReceiver = recordReceiver;
 
     Gson gson = new GsonBuilder()
         .setLenient()
@@ -64,27 +63,25 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
     call.enqueue(this);
   }
 
-  private String startTime() {
-    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
-        .withLocale(Locale.getDefault());
-    DateTime start = DateTime.now().minusDays(1);
-    return formatter.print(start);
-  }
-
   @SuppressWarnings("ConstantConditions")
   @Override
   public void onResponse(@NonNull Call<EarthQuakeAPIResponse> call,
                          @NonNull Response<EarthQuakeAPIResponse> response) {
     if (response.isSuccessful()) {
-      updateAdapter(response);
+      updateRecordReceiver(response);
     } else {
       if (response.errorBody() != null)
         Log.e(TAG, response.errorBody().toString());
     }
   }
 
+  @Override
+  public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Throwable t) {
+    Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
+  }
+
   @SuppressWarnings("ConstantConditions")
-  private void updateAdapter(@NonNull Response<EarthQuakeAPIResponse> response) {
+  private void updateRecordReceiver(@NonNull Response<EarthQuakeAPIResponse> response) {
     ArrayList<EarthQuakeRecord> items = new ArrayList<>();
     List<EarthQuakeAPIRecord> earthQuakeRecordList;
     if (response.body() == null) {
@@ -96,7 +93,14 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
     for (EarthQuakeAPIRecord record : earthQuakeRecordList) {
       items.add(convertFrom(record));
     }
-    mAdapter.setItems(items);
+    mRecordReceiver.setRecords(items);
+  }
+
+  private String startTime() {
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+        .withLocale(Locale.getDefault());
+    DateTime start = DateTime.now().minusDays(1);
+    return formatter.print(start);
   }
 
   private EarthQuakeRecord convertFrom(EarthQuakeAPIRecord rec) {
@@ -106,11 +110,6 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
         new Place(rec.getPlace()),
         !rec.getTsunami().equals("0"),
         new Coordinates(rec.getLatitude(), rec.getLongitude()));
-  }
-
-  @Override
-  public void onFailure(@NonNull Call<EarthQuakeAPIResponse> call, @NonNull Throwable t) {
-    Log.e(TAG, "Failure in getting earthquake records: " + t.getLocalizedMessage());
   }
 
   @NonNull
