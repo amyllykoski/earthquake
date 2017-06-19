@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.amyllykoski.earthquakes.R;
-import com.amyllykoski.earthquakes.webservice.EarthQuakeClient;
+import com.amyllykoski.earthquakes.webservice.EarthQuakeAPIClient;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -80,8 +80,14 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
   }
 
   private void load() {
-    EarthQuakeClient client = new EarthQuakeClient();
     RecyclerView earthQuakeList = (RecyclerView) findViewById(R.id.earthquakerecord_list);
+    if (!isConnectedToNetwork()) {
+      Snackbar.make(earthQuakeList, R.string.no_network_connection, Snackbar.LENGTH_LONG)
+          .show();
+      return;
+    }
+
+    EarthQuakeAPIClient client = new EarthQuakeAPIClient();
     earthQuakeList.addItemDecoration(new DividerItemDecoration(earthQuakeList.getContext(),
         new LinearLayoutManager(this).getOrientation()));
 
@@ -90,14 +96,9 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
         (TextView) findViewById(R.id.empty_view));
     earthQuakeList.setAdapter(adapter);
 
-    if (!isConnectedToNetwork()) {
-      Snackbar.make(earthQuakeList, "No network connection.", Snackbar.LENGTH_LONG)
-          .setAction("Action", null).show();
-    } else {
-      client.execute(adapter, String.format("%s", mMinMagnitude / 10.0));
-      Snackbar.make(earthQuakeList, "Refreshing list.", Snackbar.LENGTH_LONG)
-          .setAction("Action", null).show();
-    }
+
+    client.execute(adapter, String.format("%s", mMinMagnitude / 10.0));
+    Snackbar.make(earthQuakeList, R.string.refreshing_list, Snackbar.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {

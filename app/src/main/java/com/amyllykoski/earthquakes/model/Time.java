@@ -10,30 +10,19 @@ import java.util.Locale;
 
 public class Time {
 
+  private static final String DEFAULT_FORMAT = "hh:mm aa MM/dd";
   private String mMillis;
 
   public Time(final String millis) {
     mMillis = millis;
   }
 
-  @SuppressWarnings("unused")
-  public String getMillis() {
-    return mMillis;
-  }
-
   public String getTime(String timeFormat) {
-    SimpleDateFormat formatter =
-        new SimpleDateFormat(timeFormat == null ? "hh:mm aa" : timeFormat,
-            Locale.getDefault());
+    SimpleDateFormat formatter = new SimpleDateFormat(timeFormat == null ?
+        DEFAULT_FORMAT : timeFormat, Locale.getDefault());
+
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(Long.parseLong(mMillis));
     return formatter.format(calendar.getTime());
-  }
-
-  @Override
-  public String toString() {
-    return "Time{" +
-        "mMillis='" + mMillis + '\'' +
-        '}';
   }
 }

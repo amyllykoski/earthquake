@@ -15,12 +15,4 @@ public class Place {
   public String get() {
     return mPlace;
   }
-
-  @Override
-  public String toString() {
-    return "Place{" +
-        "mPlace='" + mPlace + '\'' +
-        '}';
-  }
-
 }

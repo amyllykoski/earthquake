@@ -25,4 +25,6 @@
     <string name="detail_header_latitude">Latitude</string>
     <string name="detail_header_longitude">Longitude</string>
     <string name="action_refresh_list">Refresh List</string>
+    <string name="no_network_connection">No network connection.</string>
+    <string name="refreshing_list">Refreshing list &#8230;</string>
 </resources>

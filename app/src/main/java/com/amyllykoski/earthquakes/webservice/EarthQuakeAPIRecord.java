@@ -15,6 +15,8 @@ import java.util.List;
  */
 class EarthQuakeAPIRecord {
 
+  private static final String DEFAULT_LAT_LON = "0.0";
+
   @SuppressWarnings("unused")
   @SerializedName("properties")
   @Expose
@@ -43,20 +45,12 @@ class EarthQuakeAPIRecord {
 
   String getLongitude() {
     return mGeometry.mCoordinates.size() > 0 ?
-        mGeometry.mCoordinates.get(0) : "0.0";
+        mGeometry.mCoordinates.get(0) : DEFAULT_LAT_LON;
   }
 
   String getLatitude() {
     return mGeometry.mCoordinates.size() > 1 ?
-        mGeometry.mCoordinates.get(1) : "0.0";
-  }
-
-  @Override
-  public String toString() {
-    return "EarthQuakeAPIRecord{" +
-        "properties=" + mProperties.toString() +
-        ", geometry=" + mGeometry.toString() +
-        '}';
+        mGeometry.mCoordinates.get(1) : DEFAULT_LAT_LON;
   }
 
   private static class Properties {
@@ -105,5 +99,13 @@ class EarthQuakeAPIRecord {
           "mCoordinates=" + mCoordinates +
           '}';
     }
+  }
+
+  @Override
+  public String toString() {
+    return "EarthQuakeAPIRecord{" +
+        "properties=" + mProperties.toString() +
+        ", geometry=" + mGeometry.toString() +
+        '}';
   }
 }

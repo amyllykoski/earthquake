@@ -31,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
+public class EarthQuakeAPIClient implements Callback<EarthQuakeAPIResponse> {
 
   private static final String BASE_URL = "https://earthquake.usgs.gov/";
   private static final String FORMAT = "geojson";
@@ -41,7 +41,8 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
   private EarthQuakeRecordReceiver mRecordReceiver;
 
   public void execute(final EarthQuakeRecordReceiver recordReceiver,
-                      final String minMagnitude) {
+                      final String minMagnitude,
+                      final String baseURL) {
     mRecordReceiver = recordReceiver;
 
     Gson gson = new GsonBuilder()
@@ -52,7 +53,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
 
     OkHttpClient.Builder httpClient = setLogLevel(HttpLoggingInterceptor.Level.BASIC);
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(baseURL)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(httpClient.build())
         .build();
@@ -61,6 +62,11 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
     Call<EarthQuakeAPIResponse> call =
         earthquakeAPI.getEarthQuakes(FORMAT, minMagnitude, startTime(), ORDER_BY_TIME);
     call.enqueue(this);
+  }
+
+  public void execute(final EarthQuakeRecordReceiver recordReceiver,
+                      final String minMagnitude) {
+    execute(recordReceiver, minMagnitude, BASE_URL);
   }
 
   @SuppressWarnings("ConstantConditions")
