@@ -4,9 +4,8 @@
 
 package com.amyllykoski.earthquakes.ui;
 
-import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +26,7 @@ public class EarthQuakeRecordDetailFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (!getArguments().containsKey(ARG_ITEM_ID)) {
-      return;
-    }
+    if (!getArguments().containsKey(ARG_ITEM_ID)) return;
 
     Gson gson = new Gson();
     mEarthQuakeRecord = gson.fromJson((String) getArguments().get(ARG_ITEM_ID),
@@ -39,30 +36,35 @@ public class EarthQuakeRecordDetailFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.earthquakerecord_detail, container, false);
-    if (mEarthQuakeRecord != null) {
-      ((TextView) rootView.findViewById(R.id.detail_time))
-          .setText(mEarthQuakeRecord.mTime.getTime(getString(R.string.date_format_full)));
-      ((TextView) rootView.findViewById(R.id.detail_place))
-          .setText(mEarthQuakeRecord.mPlace.get());
-      ((TextView) rootView.findViewById(R.id.detail_tsunami))
-          .setText(mEarthQuakeRecord.mIsTsunamiPotential ?
-              getString(R.string.is_tsunami_yes) : getString(R.string.is_tsunami_no));
-      ((TextView) rootView.findViewById(R.id.detail_magnitude))
-          .setText(mEarthQuakeRecord.mMagnitude.get());
-      ((TextView) rootView.findViewById(R.id.detail_latitude))
-          .setText(mEarthQuakeRecord.mCoordinates.getLatitude());
-      ((TextView) rootView.findViewById(R.id.detail_longitude))
-          .setText(mEarthQuakeRecord.mCoordinates.getLongitude());
-    }
+    View rootView = inflater
+        .inflate(R.layout.earthquakerecord_detail, container, false);
+    if (mEarthQuakeRecord != null) populateDetailView(rootView);
     setAppBarTitle();
     return rootView;
   }
 
+  private void populateDetailView(View rootView) {
+    ((TextView) rootView.findViewById(R.id.detail_time))
+        .setText(mEarthQuakeRecord.mTime
+            .getTime(getString(R.string.date_format_full)));
+    ((TextView) rootView.findViewById(R.id.detail_place))
+        .setText(mEarthQuakeRecord.mPlace.get());
+    ((TextView) rootView.findViewById(R.id.detail_tsunami))
+        .setText(mEarthQuakeRecord.mIsTsunamiPotential ?
+            getString(R.string.is_tsunami_yes) :
+            getString(R.string.is_tsunami_no));
+    ((TextView) rootView.findViewById(R.id.detail_magnitude))
+        .setText(mEarthQuakeRecord.mMagnitude.get());
+    ((TextView) rootView.findViewById(R.id.detail_latitude))
+        .setText(mEarthQuakeRecord.mCoordinates.getLatitude());
+    ((TextView) rootView.findViewById(R.id.detail_longitude))
+        .setText(mEarthQuakeRecord.mCoordinates.getLongitude());
+  }
+
   private void setAppBarTitle() {
-    Activity activity = getActivity();
     CollapsingToolbarLayout appBarLayout =
-        (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        (CollapsingToolbarLayout) getActivity().findViewById(R.id.toolbar_layout);
+
     if (appBarLayout != null) {
       appBarLayout.setTitle(mEarthQuakeRecord
           .mTime.getTime(getString(R.string.date_format_full)));

@@ -58,7 +58,7 @@ public class EarthQuakeClient implements Callback<EarthQuakeAPIResponse> {
         .client(httpClient.build())
         .build();
 
-    EarthquakeAPI earthquakeAPI = retrofit.create(EarthquakeAPI.class);
+    EarthQuakeAPI earthquakeAPI = retrofit.create(EarthQuakeAPI.class);
     Call<EarthQuakeAPIResponse> call =
         earthquakeAPI.getEarthQuakes(FORMAT, minMagnitude, startTime(), ORDER_BY_TIME);
     call.enqueue(this);

@@ -34,11 +34,11 @@ public class EarthQuakeRecordListActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_earthquakerecord_list);
+    JodaTimeAndroid.init(this);
+    setupToolbar();
     if (savedInstanceState != null) {
       mMinMagnitude = savedInstanceState.getInt(MagnitudeSettingDialog.KEY_CURRENT_VALUE);
     }
-    JodaTimeAndroid.init(this);
-    setupToolbar();
     load();
   }
 

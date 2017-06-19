@@ -4,7 +4,6 @@
 
 package com.amyllykoski.earthquakes.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,29 +21,28 @@ public class EarthQuakeRecordDetailActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
     setSupportActionBar(toolbar);
     ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    if (savedInstanceState == null) {
-      Bundle arguments = new Bundle();
-      arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID,
-          getIntent().getStringExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID));
-      EarthQuakeRecordDetailFragment fragment = new EarthQuakeRecordDetailFragment();
-      fragment.setArguments(arguments);
-      getSupportFragmentManager().beginTransaction()
-          .add(R.id.earthquakerecord_detail_container, fragment)
-          .commit();
-    }
+    if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+    if (savedInstanceState == null) showEarthQuakeRecordDetails();
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
-    if (id == android.R.id.home) {
-      navigateUpTo(new Intent(this, EarthQuakeRecordListActivity.class));
+    if (item.getItemId() == android.R.id.home) {
+      finish();
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showEarthQuakeRecordDetails() {
+    Bundle arguments = new Bundle();
+    arguments.putString(EarthQuakeRecordDetailFragment.ARG_ITEM_ID,
+        getIntent().getStringExtra(EarthQuakeRecordDetailFragment.ARG_ITEM_ID));
+    EarthQuakeRecordDetailFragment fragment = new EarthQuakeRecordDetailFragment();
+    fragment.setArguments(arguments);
+    getSupportFragmentManager()
+        .beginTransaction()
+        .add(R.id.earthquakerecord_detail_container, fragment)
+        .commit();
   }
 }
